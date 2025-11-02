@@ -19,6 +19,39 @@
         </div>
       </section>
 
+      <!-- 统计信息（可选） -->
+      <section class="stats-section">
+        <el-row :gutter="20">
+          <el-col :xs="12" :sm="6">
+            <div class="stat-card">
+              <el-icon class="stat-icon" color="#409eff"><Document /></el-icon>
+              <div class="stat-value">{{ stats.postCount }}</div>
+              <div class="stat-label">文章总数</div>
+            </div>
+          </el-col>
+          <el-col :xs="12" :sm="6">
+            <div class="stat-card">
+              <el-icon class="stat-icon" color="#67c23a"><View /></el-icon>
+              <div class="stat-value">{{ stats.viewCount }}</div>
+              <div class="stat-label">总浏览量</div>
+            </div>
+          </el-col>
+          <el-col :xs="12" :sm="6">
+            <div class="stat-card">
+              <el-icon class="stat-icon" color="#e6a23c"><User /></el-icon>
+              <div class="stat-value">{{ stats.userCount }}</div>
+              <div class="stat-label">用户数量</div>
+            </div>
+          </el-col>
+          <el-col :xs="12" :sm="6">
+            <div class="stat-card">
+              <el-icon class="stat-icon" color="#f56c6c"><ChatDotRound /></el-icon>
+              <div class="stat-value">{{ stats.commentCount }}</div>
+              <div class="stat-label">评论总数</div>
+            </div>
+          </el-col>
+        </el-row>
+
       <!-- 推荐文章 -->
       <section class="featured-section">
         <div class="section-header">
@@ -75,38 +108,7 @@
         <el-empty v-if="!loading && featuredPosts.length === 0" description="暂无推荐文章" />
       </section>
 
-      <!-- 统计信息（可选） -->
-      <section class="stats-section">
-        <el-row :gutter="20">
-          <el-col :xs="12" :sm="6">
-            <div class="stat-card">
-              <el-icon class="stat-icon" color="#409eff"><Document /></el-icon>
-              <div class="stat-value">{{ stats.postCount }}</div>
-              <div class="stat-label">文章总数</div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="6">
-            <div class="stat-card">
-              <el-icon class="stat-icon" color="#67c23a"><View /></el-icon>
-              <div class="stat-value">{{ stats.viewCount }}</div>
-              <div class="stat-label">总浏览量</div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="6">
-            <div class="stat-card">
-              <el-icon class="stat-icon" color="#e6a23c"><User /></el-icon>
-              <div class="stat-value">{{ stats.userCount }}</div>
-              <div class="stat-label">用户数量</div>
-            </div>
-          </el-col>
-          <el-col :xs="12" :sm="6">
-            <div class="stat-card">
-              <el-icon class="stat-icon" color="#f56c6c"><ChatDotRound /></el-icon>
-              <div class="stat-value">{{ stats.commentCount }}</div>
-              <div class="stat-label">评论总数</div>
-            </div>
-          </el-col>
-        </el-row>
+
       </section>
     </div>
   </div>

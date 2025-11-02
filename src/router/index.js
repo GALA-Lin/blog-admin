@@ -9,18 +9,18 @@ const routes = [
         component: () => import('@/views/Home.vue'),
         meta: { title: '首页' }
     },
-    // {
-    //     path: '/posts',
-    //     name: 'PostList',
-    //     component: () => import('@/views/PostList.vue'),
-    //     meta: { title: '文章列表' }
-    // },
-    // {
-    //     path: '/posts/:id',
-    //     name: 'PostDetail',
-    //     component: () => import('@/views/PostDetail.vue'),
-    //     meta: { title: '文章详情' }
-    // },
+    {
+        path: '/posts',
+        name: 'PostList',
+        component: () => import('@/views/PostList.vue'),
+        meta: { title: '文章列表' }
+    },
+    {
+        path: '/posts/:id',
+        name: 'PostDetail',
+        component: () => import('@/views/PostDetail.vue'),
+        meta: { title: '文章详情' }
+    },
     {
         path: '/login',
         name: 'Login',
@@ -45,12 +45,12 @@ const routes = [
     //     component: () => import('@/views/MyPosts.vue'),
     //     meta: { title: '我的文章', requiresAuth: true }
     // },
-    // {
-    //     path: '/editor',
-    //     name: 'PostEditor',
-    //     component: () => import('@/views/PostEditor.vue'),
-    //     meta: { title: '写文章', requiresAuth: true }
-    // },
+    {
+        path: '/editor',
+        name: 'PostEditor',
+        component: () => import('@/views/PostEditor.vue'),
+        meta: { title: '写文章', requiresAuth: true }
+    },
     // {
     //     path: '/editor/:id',
     //     name: 'PostEdit',
@@ -79,7 +79,7 @@ const router = createRouter({
 // 路由守卫
 router.beforeEach((to, from, next) => {
     // 设置页面标题
-    document.title = to.meta.title ? `${to.meta.title} - 我的博客` : '我的博客'
+    document.title = to.meta.title ? `${to.meta.title} - 码农小胡的技术栈` : '我的博客'
 
     // 检查是否需要登录
     if (to.meta.requiresAuth) {

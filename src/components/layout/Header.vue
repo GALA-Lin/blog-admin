@@ -5,7 +5,7 @@
       <div class="header-left">
         <router-link to="/" class="logo">
           <el-icon :size="28"><Reading /></el-icon>
-          <span class="logo-text">我的博客</span>
+          <span class="logo-text">GALA_Lin's Blog</span>
         </router-link>
       </div>
 
