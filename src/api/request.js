@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-import router from 'vue-router'
+import router from '@/router'
 
 // 创建 axios 实例
 const request = axios.create({

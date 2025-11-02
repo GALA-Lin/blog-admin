@@ -90,6 +90,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.js'
 import { ElMessageBox } from 'element-plus'
+import {Bell, Document, EditPen, HomeFilled, Star, SwitchButton, User} from "@element-plus/icons-vue";
 
 const router = useRouter()
 const route = useRoute()
@@ -110,13 +111,13 @@ const handleMenuSelect = (index) => {
 const handleUserCommand = async (command) => {
   switch (command) {
     case 'profile':
-      router.push('/profile')
+      await router.push('/profile')
       break
     case 'my-posts':
-      router.push('/my-posts')
+      await router.push('/my-posts')
       break
     case 'favorites':
-      router.push('/favorites')
+      await router.push('/favorites')
       break
     case 'logout':
       try {

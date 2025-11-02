@@ -116,8 +116,8 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import {ChatDotRound, Document, EditPen, Picture, Reading, Star, User, View} from "@element-plus/icons-vue";
-// import { getPostList } from '@/api/post'  // 后续创建
+import { getPostList } from '@/api/post'
+import {ChatDotRound, Picture, Star, View} from "@element-plus/icons-vue";
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -138,54 +138,18 @@ const goToPosts = () => router.push('/posts')
 const goToEditor = () => router.push('/editor')
 const goToPostDetail = (id) => router.push(`/posts/${id}`)
 
-// 获取推荐文章（模拟数据，后续对接真实 API）
+// 获取推荐文章
 const loadFeaturedPosts = async () => {
   loading.value = true
   try {
-    // const res = await getPostList({ page: 1, size: 6, status: 1 })
-    // featuredPosts.value = res.records
-
-    // 模拟数据
-    setTimeout(() => {
-      featuredPosts.value = [
-        {
-          id: 1,
-          title: 'Vue 3 组合式 API 入门指南',
-          summary: '深入浅出介绍 Vue 3 的组合式 API，包括 ref、reactive、computed 等核心概念...',
-          coverImage: '',
-          authorName: '张三',
-          authorAvatar: '',
-          viewCount: 1234,
-          likeCount: 56,
-          commentCount: 12
-        },
-        {
-          id: 2,
-          title: 'Spring Boot 实战：构建 RESTful API',
-          summary: '从零开始使用 Spring Boot 构建企业级 RESTful API，包含完整的项目实战...',
-          coverImage: '',
-          authorName: '李四',
-          authorAvatar: '',
-          viewCount: 890,
-          likeCount: 34,
-          commentCount: 8
-        },
-        {
-          id: 3,
-          title: 'TypeScript 高级类型技巧',
-          summary: '探索 TypeScript 的高级类型系统，掌握泛型、条件类型、映射类型等...',
-          coverImage: '',
-          authorName: '王五',
-          authorAvatar: '',
-          viewCount: 567,
-          likeCount: 23,
-          commentCount: 5
-        }
-      ]
-      loading.value = false
-    }, 500)
+    // 调用真实 API
+    const res = await getPostList({ page: 1, size: 6, status: 1 })
+    featuredPosts.value = res.records
   } catch (error) {
     console.error('加载推荐文章失败', error)
+    // 失败时显示空数据
+    featuredPosts.value = []
+  } finally {
     loading.value = false
   }
 }
