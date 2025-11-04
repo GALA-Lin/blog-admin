@@ -243,7 +243,7 @@ const handlePublish = async () => {
   }
 
   try {
-    await ElMessageBox.confirm(
+    ElMessageBox.confirm(
         '确定要发布这篇文章吗？',
         '提示',
         {

@@ -33,18 +33,18 @@ const routes = [
         component: () => import('@/views/Register.vue'),
         meta: { title: '注册' }
     },
-    // {
-    //     path: '/profile',
-    //     name: 'Profile',
-    //     component: () => import('@/views/Profile.vue'),
-    //     meta: { title: '个人中心', requiresAuth: true }
-    // },
-    // {
-    //     path: '/my-posts',
-    //     name: 'MyPosts',
-    //     component: () => import('@/views/MyPosts.vue'),
-    //     meta: { title: '我的文章', requiresAuth: true }
-    // },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: () => import('@/views/Profile.vue'),
+        meta: { title: '个人中心', requiresAuth: true }
+    },
+    {
+        path: '/my-posts',
+        name: 'MyPosts',
+        component: () => import('@/views/MyPosts.vue'),
+        meta: { title: '我的文章', requiresAuth: true }
+    },
     {
         path: '/editor',
         name: 'PostEditor',
