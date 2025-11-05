@@ -8,12 +8,14 @@
       <router-view />
     </main>
   </div>
+    <Footer v-if="showFooter" />
 </template>
 
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import Header from '@/components/layout/Header.vue'
+import Footer from "@/components/layout/Footer.vue";
 
 const route = useRoute()
 
@@ -21,6 +23,11 @@ const route = useRoute()
 const showHeader = computed(() => {
   const noHeaderPages = ['/login', '/register']
   return !noHeaderPages.includes(route.path)
+})
+
+const showFooter = computed(() => {
+  const noFooterPages = ['/login', '/register']
+  return !noFooterPages.includes(route.path)
 })
 </script>
 

@@ -26,6 +26,7 @@
               <el-button
                   :type="post.isLiked ? 'primary' : 'default'"
                   @click="handleLike"
+                  :loading="liking"
               >
                 <el-icon><Star /></el-icon>
                 {{ post.isLiked ? '已点赞' : '点赞' }} ({{ post.likeCount }})
@@ -33,6 +34,7 @@
               <el-button
                   :type="post.isFavorited ? 'primary' : 'default'"
                   @click="handleFavorite"
+                  :loading="favoriting"
               >
                 <el-icon><Collection /></el-icon>
                 {{ post.isFavorited ? '已收藏' : '收藏' }}
@@ -54,26 +56,24 @@
         </div>
       </el-card>
 
-      <!-- 评论区（后续实现） -->
+      <!-- 评论区 -->
       <el-card class="comment-section" v-if="post">
-        <template #header>
-          <div class="comment-header">
-            <h3>评论 ({{ post.commentCount || 0 }})</h3>
-          </div>
-        </template>
-        <el-empty description="评论功能开发中..." />
+        <CommentSection :post-id="post.id" />
       </el-card>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-import { getPostDetail } from '@/api/post'
-import { ElMessage } from 'element-plus'
-import { marked } from 'marked'
+import {computed, onMounted, ref} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+import {useAuthStore} from '@/stores/auth'
+import {getPostDetail} from '@/api/post'
+import {checkPostLike, togglePostLike} from '@/api/like'
+import {checkFavorite, toggleFavorite} from '@/api/favorite'
+import CommentSection from '@/components/comment/CommentSection.vue'
+import {ElMessage} from 'element-plus'
+import {marked} from 'marked'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 
@@ -90,6 +90,8 @@ const router = useRouter()
 const authStore = useAuthStore()
 
 const loading = ref(false)
+const liking = ref(false)
+const favoriting = ref(false)
 const post = ref(null)
 
 // 渲染 Markdown 内容
@@ -104,14 +106,33 @@ const loadPostDetail = async () => {
   loading.value = true
 
   try {
-    const data = await getPostDetail(postId)
-    post.value = data
+    post.value = await getPostDetail(postId)
+
+    // 如果用户已登录，检查点赞和收藏状态
+    if (authStore.isLoggedIn) {
+      await loadInteractionStatus()
+    }
   } catch (error) {
     console.error('加载文章失败', error)
     ElMessage.error('文章不存在或已被删除')
-    router.push('/posts')
+    await router.push('/posts')
   } finally {
     loading.value = false
+  }
+}
+
+// 加载点赞和收藏状态
+const loadInteractionStatus = async () => {
+  try {
+    const [likeStatus, favoriteStatus] = await Promise.all([
+      checkPostLike(post.value.id),
+      checkFavorite(post.value.id)
+    ])
+
+    post.value.isLiked = likeStatus
+    post.value.isFavorited = favoriteStatus
+  } catch (error) {
+    console.error('加载互动状态失败', error)
   }
 }
 
@@ -121,14 +142,47 @@ const formatDate = (date) => {
   return dayjs(date).format('YYYY-MM-DD HH:mm')
 }
 
-// 点赞（后续实现 API）
+// 点赞
 const handleLike = async () => {
-  ElMessage.info('点赞功能开发中...')
+  if (!authStore.isLoggedIn) {
+    ElMessage.warning('请先登录')
+    await router.push('/login')
+    return
+  }
+
+  liking.value = true
+  try {
+    const result = await togglePostLike(post.value.id)
+    post.value.isLiked = result
+    post.value.likeCount += result ? 1 : -1
+    ElMessage.success(result ? '点赞成功' : '取消点赞')
+  } catch (error) {
+    console.error('点赞失败', error)
+    ElMessage.error('操作失败，请稍后重试')
+  } finally {
+    liking.value = false
+  }
 }
 
-// 收藏（后续实现 API）
+// 收藏
 const handleFavorite = async () => {
-  ElMessage.info('收藏功能开发中...')
+  if (!authStore.isLoggedIn) {
+    ElMessage.warning('请先登录')
+    await router.push('/login')
+    return
+  }
+
+  favoriting.value = true
+  try {
+    const result = await toggleFavorite(post.value.id)
+    post.value.isFavorited = result
+    ElMessage.success(result ? '收藏成功' : '取消收藏')
+  } catch (error) {
+    console.error('收藏失败', error)
+    ElMessage.error('操作失败，请稍后重试')
+  } finally {
+    favoriting.value = false
+  }
 }
 
 onMounted(() => {
@@ -312,12 +366,6 @@ onMounted(() => {
 
 .comment-section {
   margin-top: 20px;
-}
-
-.comment-header h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
 }
 
 /* 响应式 */

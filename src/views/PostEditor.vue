@@ -220,7 +220,7 @@ const handleSaveDraft = async () => {
       const res = await createPost(data)
       ElMessage.success('草稿保存成功')
       // 保存后切换到编辑模式
-      router.replace(`/editor/${res}`)
+      await router.replace(`/editor/${res}`)
     }
   } catch (error) {
     console.error('保存失败', error)
@@ -243,7 +243,7 @@ const handlePublish = async () => {
   }
 
   try {
-    ElMessageBox.confirm(
+    await ElMessageBox.confirm(
         '确定要发布这篇文章吗？',
         '提示',
         {
@@ -269,7 +269,7 @@ const handlePublish = async () => {
     }
 
     ElMessage.success('发布成功')
-    router.push('/my-posts')
+    await router.push('/my-posts')
   } catch (error) {
     if (error !== 'cancel') {
       console.error('发布失败', error)
