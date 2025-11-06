@@ -51,12 +51,12 @@ const routes = [
         component: () => import('@/views/PostEditor.vue'),
         meta: { title: '写文章', requiresAuth: true }
     },
-    // {
-    //     path: '/editor/:id',
-    //     name: 'PostEdit',
-    //     component: () => import('@/views/PostEditor.vue'),
-    //     meta: { title: '编辑文章', requiresAuth: true }
-    // },
+    {
+        path: '/editor/:id',
+        name: 'PostEdit',
+        component: () => import('@/views/PostEditor.vue'),
+        meta: { title: '编辑文章', requiresAuth: true }
+    },
     // {
     //     path: '/favorites',
     //     name: 'Favorites',
